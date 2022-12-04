@@ -3,13 +3,13 @@ fun main() {
         return input.fold(0) {
             acc, el ->
             val (firstHalf, secondHalf) = el.chunked(el.count()/2)
-            acc + getIntersection(firstHalf, secondHalf).first().getPriority()
+            acc + getIntersection(firstHalf, secondHalf).first().priority
         }
     }
 
     fun part2(input: List<String>): Int {
         return input.chunked(3).fold(0) {
-            acc, el -> acc + getIntersection(*el.toTypedArray()).first().getPriority()
+            acc, el -> acc + getIntersection(*el.toTypedArray()).first().priority
         }
     }
 
@@ -21,7 +21,8 @@ fun main() {
 val priorityMap =
     ('a'..'z').zip(1..26).toMap() +
     ('A'..'Z').zip(27..52).toMap()
-fun Char.getPriority(): Int = priorityMap[this] ?: 0
+val Char.priority: Int
+    get() = priorityMap[this] ?: 0
 
 //fun getIntersection(s1: String, s2: String): Set<Char> =
 //    s1.toSet() intersect s2.toSet()

@@ -48,7 +48,7 @@ fun main() {
     fun part2(input: List<String>): Int {
         // starting position counts as visited
         val tailVisits = mutableSetOf<Position>()
-        var startPosition = Position(0, 0)
+        val startPosition = Position(0, 0)
         val positions = (0..9).associateWith { startPosition }.toMutableMap()
         //println(positions)
 
@@ -61,7 +61,7 @@ fun main() {
         //println(moves)
 
         moves.forEach { (direction, count) ->
-            for (i in 1..count) {
+            for (c in 1..count) {
                 when (direction) {
                     "L" -> {
                         val headPosition = positions[0]!!
@@ -96,7 +96,17 @@ fun main() {
                         tailVisits.add(positions[9]!!)
                     }
                 }
-                println(positions)
+//                println(positions)
+
+//                // print the Day09test2 grid after each move
+//                var bridge = ""
+//                for(r in 4 downTo 0) {
+//                    for(c in 0..5) {
+//                        val rope = positions.toList().find { it.second == Pair(c, r) }
+//                        bridge += rope?.first?.toString() ?: "."
+//                    }
+//                }
+//                bridge.windowed(6, 6).forEach(::println)
             }
         }
 
@@ -112,14 +122,25 @@ fun main() {
 typealias Position = Pair<Int, Int>
 
 fun getNewTailPosition(head: Position, tail: Position): Position {
-    // head: 4, 1, tail: 3, 0
-    val xDiff = head.first - tail.first
-    if(abs(xDiff) > 1) {
-        return Position(if(head.first < tail.first) tail.first - 1 else tail.first + 1, head.second)
+    val xDiff = abs(head.first - tail.first)
+    val yDiff = abs(head.second - tail.second)
+    if(xDiff > 1 && yDiff > 1) {
+        return Position(
+            if(head.first < tail.first) tail.first - 1 else tail.first + 1,
+            if(head.second < tail.second) tail.second - 1 else tail.second + 1
+        )
     }
-    val yDiff = head.second - tail.second
-    if(abs(yDiff) > 1) {
-        return Position(head.first, if(head.second < tail.second) tail.second - 1 else tail.second + 1)
+    if(xDiff > 1) {
+        return Position(
+            if(head.first < tail.first) tail.first - 1 else tail.first + 1,
+            head.second
+        )
+    }
+    if(yDiff > 1) {
+        return Position(
+            head.first,
+            if(head.second < tail.second) tail.second - 1 else tail.second + 1
+        )
     }
     return tail
 }

@@ -59,8 +59,8 @@ fun main() {
     //            }
                 acc + if((i - 1..i + 1).contains(position)) "#" else "."
             }
-            .windowed(screenLength, screenLength)
-            
+            .chunked(screenLength)
+
         screenRows.forEach(::println)
 
         return input.size
